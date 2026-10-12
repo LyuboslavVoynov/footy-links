@@ -1,17 +1,15 @@
 const { PrismaClient } = require("@prisma/client");
 const source = [...require("./data/representative-data"), ...require("./data/elite-expansion")];
-const clubUniverse = require("./data/club-universe.json");
 const qualifyingClubs = require("./data/qualifying-clubs.json");
 
 const prisma = new PrismaClient();
 const slugify = (value) => value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 async function main() {
-  const permittedClubs = new Set(clubUniverse);
   const qualifyingClubSlugs = new Set(qualifyingClubs.map((club) => slugify(club.name)));
   const clubs = new Map();
   const players = source.map(({ full_name, nationality, challenge_eligible }) => ({ name: full_name, slug: slugify(full_name), nationality, eligibleForChallenge: challenge_eligible }));
-  const relationships = source.flatMap((player) => player.senior_careers.filter((career) => permittedClubs.has(career.club)).map((career) => {
+  const relationships = source.flatMap((player) => player.senior_careers.map((career) => {
     const clubSlug = slugify(career.club);
     clubs.set(clubSlug, { name: career.club, slug: clubSlug, country: career.country });
     return { playerSlug: slugify(player.full_name), clubSlug, loan: Boolean(career.loan), qualifyingEvidence: Boolean(career.qualifyingEvidence), sourceName: career.qualifyingEvidence ? "editorial-50-plus" : "representative-fixture" };

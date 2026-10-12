@@ -18,6 +18,13 @@ describe("football graph data layer", () => {
     expect(fixture.playerClubs.find((edge) => edge.playerSlug === "aaron-example")?.loan).toBe(true);
   });
 
+  it("retains every recorded senior club after a player qualifies", () => {
+    const dataset = normalizeProviderData([
+      { full_name: "Eligible Example", challenge_eligible: true, senior_careers: [{ club: "Manchester United", country: "England" }, { club: "Flamengo", country: "Brazil" }] },
+    ]);
+    expect(clubsForPlayer(dataset, "eligible-example").map((club) => club.name)).toEqual(["Flamengo", "Manchester United"]);
+  });
+
   it("retrieves clubs for a player", () => {
     expect(clubsForPlayer(fixture, "cristiano-ronaldo").map((club) => club.name)).toEqual(["Manchester United", "Sporting CP"]);
   });

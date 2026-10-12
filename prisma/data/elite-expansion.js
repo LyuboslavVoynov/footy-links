@@ -27,9 +27,20 @@ const thirdPack = [
   ["Gabriel Batistuta", "Argentina", "Fiorentina", "Italy"], ["Manuel Pasqual", "Italy", "Fiorentina", "Italy"], ["Borja Valero", "Spain", "Fiorentina", "Italy"], ["Miroslav Klose", "Germany", "Werder Bremen", "Germany"], ["Tim Wiese", "Germany", "Werder Bremen", "Germany"], ["Per Mertesacker", "Germany", "Werder Bremen", "Germany"], ["Uwe Seeler", "Germany", "Hamburg", "Germany"], ["Rafael van der Vaart", "Netherlands", "Hamburg", "Germany"], ["Sergej Barbarez", "Bosnia and Herzegovina", "Hamburg", "Germany"], ["Heiko Westermann", "Germany", "Hamburg", "Germany"], ["Wilfried Zaha", "Ivory Coast", "Crystal Palace", "England"], ["Julian Speroni", "Argentina", "Crystal Palace", "England"], ["Luka Milivojevic", "Serbia", "Crystal Palace", "England"], ["Clint Dempsey", "United States", "Fulham", "England"], ["Brede Hangeland", "Norway", "Fulham", "England"], ["Danny Murphy", "England", "Fulham", "England"], ["Bobby Zamora", "England", "Fulham", "England"], ["Lucas Radebe", "South Africa", "Leeds United", "England"], ["Gary Speed", "Wales", "Leeds United", "England"], ["Mark Viduka", "Australia", "Leeds United", "England"], ["Ian Harte", "Ireland", "Leeds United", "England"]
 ];
 
+// Eligibility gets a player into the game; these are the player's other
+// recorded senior teams and must remain visible as route options.
+const careerExtensions = {
+  Jorginho: [
+    { club: "Hellas Verona", country: "Italy" },
+    { club: "Chelsea", country: "England" },
+    { club: "Arsenal", country: "England" },
+    { club: "Flamengo", country: "Brazil" },
+  ],
+};
+
 module.exports = [...rows, ...secondPack, ...thirdPack].map(([full_name, nationality, club, country]) => ({
   full_name,
   nationality,
   challenge_eligible: true,
-  senior_careers: [{ club, country, qualifyingEvidence: true }],
+  senior_careers: [{ club, country, qualifyingEvidence: true }, ...(careerExtensions[full_name] ?? [])],
 }));
