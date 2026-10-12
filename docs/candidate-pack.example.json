@@ -1,0 +1,16 @@
+{
+  "sourceName": "licensed-provider",
+  "sourceReference": "https://provider.example/documentation",
+  "players": [
+    {
+      "name": "Example Player",
+      "nationality": "England",
+      "clubName": "Example FC",
+      "clubCountry": "England",
+      "appearances": 73,
+      "startYear": 2017,
+      "endYear": 2022,
+      "sourceReference": "https://provider.example/player/example-player/team/example-fc"
+    }
+  ]
+}

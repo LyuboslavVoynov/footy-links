@@ -1,0 +1,61 @@
+{
+  "name": "football-links",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "postinstall": "prisma generate",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "prisma:generate": "prisma generate",
+    "prisma:validate": "prisma validate",
+    "db:check": "prisma db execute --stdin --schema prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "validate:data": "tsx scripts/validate-data.ts",
+    "validate:database": "tsx scripts/validate-database.ts",
+    "import:wikidata": "tsx scripts/import-wikidata.ts",
+    "curate:game-graph": "tsx scripts/rebuild-curated-game-graph.ts",
+    "curate:prestige-pool": "tsx scripts/curate-prestige-player-pool.ts",
+    "approve:club-catalogue": "tsx scripts/approve-club-catalogue.ts",
+    "intake:import": "tsx scripts/ingest-candidate-pack.ts",
+    "intake:export-api-football": "tsx scripts/export-api-football-team-pack.ts",
+    "images:enrich-wikimedia": "tsx scripts/enrich-wikimedia-images.ts",
+    "images:resolve-playable": "tsx scripts/resolve-playable-image-identities.ts",
+    "assets:backfill": "tsx scripts/backfill-media-assets.ts",
+    "sync:football-data-crests": "tsx scripts/sync-football-data-crests.ts"
+  },
+  "engines": {
+    "node": "20.x || 22.x"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.50.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "dotenv": "^18.0.6",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.0.0",
+    "jsdom": "^25.0.0",
+    "playwright": "^1.50.0",
+    "postcss": "^8.0.0",
+    "prisma": "^6.0.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.0.0"
+  }
+}
