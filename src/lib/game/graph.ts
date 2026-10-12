@@ -17,6 +17,8 @@ export type ShortestPath = { distance: number; path: GraphEntity[] };
 export type Challenge = { start: GraphEntity; target: GraphEntity; solution: ShortestPath };
 export type ChallengeDifficulty = "easy" | "standard" | "hard";
 
+// A puzzle must show three player dots: player → club → player → club → player.
+export const MINIMUM_CHALLENGE_DISTANCE = 4;
 export const playerNodeId = (slug: string) => `player:${slug}`;
 export const clubNodeId = (slug: string) => `club:${slug}`;
 
@@ -88,13 +90,15 @@ function connectedEligibleComponents(graph: FootballGraph) {
 export function generateRandomChallenge(graph: FootballGraph, random: () => number = Math.random): Challenge {
   const components = connectedEligibleComponents(graph);
   if (!components.length) throw new Error("No solvable challenge pairs are available");
-  const component = components[Math.floor(random() * components.length)];
-  const start = component[Math.floor(random() * component.length)];
-  const targetOffset = 1 + Math.floor(random() * (component.length - 1));
-  const target = component[(component.indexOf(start) + targetOffset) % component.length];
-  const solution = shortestPath(graph, start.id, target.id);
-  if (!solution) throw new Error("Generated challenge was not solvable");
-  return { start, target, solution };
+  for (let attempt = 0; attempt < 500; attempt += 1) {
+    const component = components[Math.floor(random() * components.length)];
+    const start = component[Math.floor(random() * component.length)];
+    const targetOffset = 1 + Math.floor(random() * (component.length - 1));
+    const target = component[(component.indexOf(start) + targetOffset) % component.length];
+    const solution = shortestPath(graph, start.id, target.id);
+    if (solution && solution.distance >= MINIMUM_CHALLENGE_DISTANCE) return { start, target, solution };
+  }
+  throw new Error(`No challenge pairs meet the ${MINIMUM_CHALLENGE_DISTANCE}-link minimum.`);
 }
 
 function seededRandom(seed: string) {
@@ -107,7 +111,7 @@ function seededRandom(seed: string) {
 }
 
 function matchesDifficulty(distance: number, difficulty: ChallengeDifficulty) {
-  if (difficulty === "easy") return distance <= 4;
+  if (difficulty === "easy") return distance === MINIMUM_CHALLENGE_DISTANCE;
   if (difficulty === "hard") return distance >= 8;
   return distance >= 5 && distance <= 7;
 }
