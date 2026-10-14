@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { getDataSummary } from "@/lib/db/queries";
 
+// Data is read from PostgreSQL at request time. Rendering this page during the
+// build would require Vercel's build environment to have a live database.
+export const dynamic = "force-dynamic";
+
 export default async function DataPage() {
   const summary = await getDataSummary();
   return (
